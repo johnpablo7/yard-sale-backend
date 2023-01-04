@@ -28,14 +28,14 @@ router.post('/', (req, res) => {
 router.patch('/:id', (req, res) => {
   const { id } = req.params;
   const body = req.body;
-  const product = service.update(id, body);
-  res.json(product);
+  const updateProduct = service.update(id, body);
+  res.json(updateProduct);
 });
 
 router.delete('/:id', (req, res) => {
   const { id } = req.params;
-  const rta = service.delete(id);
-  res.json(rta);
+  const deleteProduct = service.delete(id);
+  res.json(deleteProduct);
 });
 
 module.exports = router;

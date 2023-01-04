@@ -1,58 +1,40 @@
 const express = require('express');
-const { faker } = require('@faker-js/faker');
+const UsersService = require('../services/users.service');
+
+// const validatorHandler = require('./../middlewares/validator.handler');
+// const { createUserSchema, getUserSchema } = require('./../schemas/user.schema');
+
 const router = express.Router();
+const service = new UsersService();
 
 router.get('/', (req, res) => {
-  const users = [];
-  const { size } = req.query;
-  const limit = size || 10;
-
-  for (let i = 0; i < limit; i++) {
-    users.push({
-      name: faker.name.firstName(),
-      lastName: faker.name.lastName(),
-      image: faker.image.imageUrl(),
-    });
-  }
-
+  const users = service.find();
   res.json(users);
 });
 
 router.get('/:id', (req, res) => {
-  const { id } = req.query;
-
-  res.json({
-    id,
-    name: faker.name.firstName(),
-    lastName: faker.name.lastName(),
-    image: faker.image.imageUrl(),
-  });
+  const { id } = req.params;
+  const user = service.findOne(id);
+  res.json(user);
 });
 
 router.post('/', (req, res) => {
   const body = req.body;
-  res.json({
-    message: 'created user',
-    data: body,
-  });
+  const newUser = service.create(body);
+  res.status(201).json(newUser);
 });
 
 router.patch('/:id', (req, res) => {
   const { id } = req.params;
   const body = req.body;
-  res.json({
-    message: 'update user',
-    data: body,
-    id,
-  });
+  const updateUser = service.update(id, body);
+  res.json(updateUser);
 });
 
 router.delete('/:id', (req, res) => {
   const { id } = req.params;
-  res.json({
-    message: 'delete user',
-    id,
-  });
+  const deleteUser = service.delete(id);
+  res.json(deleteUser);
 });
 
 module.exports = router;

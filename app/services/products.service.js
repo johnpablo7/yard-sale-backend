@@ -19,9 +19,12 @@ class ProductsService {
   }
 
   create(data) {
+    const { name, price, image } = data;
     const newProduct = {
       id: faker.datatype.uuid(),
-      ...data,
+      name,
+      price,
+      image,
     };
     this.products.push(newProduct);
     return newProduct;
