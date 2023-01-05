@@ -1,4 +1,5 @@
 const { faker } = require('@faker-js/faker');
+const boom = require('@hapi/boom');
 
 class UsersService {
   constructor() {
@@ -14,11 +15,12 @@ class UsersService {
         name: faker.name.firstName(),
         lastname: faker.name.lastName(),
         email: faker.internet.email(),
+        isBlock: faker.datatype.boolean(),
       });
     }
   }
 
-  create(data) {
+  async create(data) {
     const { name, lastname, email } = data;
     const newUser = {
       id: faker.datatype.uuid(),
@@ -31,19 +33,37 @@ class UsersService {
   }
 
   find() {
-    return this.users;
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve(this.users);
+      }, 5000);
+    });
   }
 
-  findOne(id) {
-    return this.users.find((item) => item.id === id);
+  async findOne(id) {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        const user = this.users.find((item) => item.id === id);
+        if (!user) {
+          reject(boom.notFound('User not found'));
+        } else if (user.isBlock) {
+          reject(boom.conflict('User is Block'));
+        }
+
+        resolve(user);
+      }, 2000);
+    });
   }
 
-  update(id, changes) {
+  async update(id, changes) {
     const index = this.users.findIndex((item) => item.id === id);
     if (index === -1) {
-      throw new Error('user not found');
+      throw boom.notFound('User is Block');
     }
     const user = this.users[index];
+    if (user.isBlock) {
+      throw boom.conflict('User is Block');
+    }
     this.users[index] = {
       ...user,
       ...changes,
@@ -51,10 +71,10 @@ class UsersService {
     return this.users[index];
   }
 
-  delete(id) {
+  async delete(id) {
     const index = this.users.findIndex((item) => item.id === id);
     if (index === -1) {
-      throw new Error('user not found');
+      throw boom.notFound('User not found');
     }
     this.users.splice(index, 1);
     return { id };
