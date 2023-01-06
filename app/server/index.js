@@ -18,8 +18,9 @@ const whitelist = [
   'https://yard-sale-node-production.up.railway.app',
 ];
 const options = {
+  optionsSuccessStatus: 200,
   origin: (origin, callback) => {
-    if (whitelist.includes(origin)) {
+    if (!origin || whitelist.includes(origin)) {
       callback(null, true);
     } else {
       callback(new Error('without permission'));
