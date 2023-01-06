@@ -33,7 +33,7 @@ class UsersService {
   }
 
   find() {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       setTimeout(() => {
         resolve(this.users);
       }, 5000);
