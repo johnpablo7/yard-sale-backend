@@ -15,7 +15,7 @@ app.use(express.json());
 
 const whitelist = [
   'http://127.0.0.1:5500',
-  'https://yard-sale-node-production.up.railway.app/',
+  'https://yard-sale-node-production.up.railway.app',
 ];
 const options = {
   origin: (origin, callback) => {
