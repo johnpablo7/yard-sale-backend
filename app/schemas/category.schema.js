@@ -9,16 +9,20 @@ const name = Joi.string()
     'string.pattern.base':
       'The category name accepts alphabetic characters, numbers and spaces',
   });
+const image = Joi.string().uri();
 
 const getCategorySchema = Joi.object({
   id: id.required(),
 });
+
 const createCategorySchema = Joi.object({
   name: name.required(),
+  image: image.required(),
 });
 
 const updateCategorySchema = Joi.object({
   name: name,
+  image: image,
 });
 
 module.exports = {

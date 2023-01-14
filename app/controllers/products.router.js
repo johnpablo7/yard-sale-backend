@@ -1,4 +1,5 @@
 const express = require('express');
+
 const ProductsService = require('../services/products.service');
 const validatorHandler = require('../middleware/validator.handler');
 const {
@@ -10,13 +11,13 @@ const {
 const router = express.Router();
 const service = new ProductsService();
 
-router.get('/', async (req, res) => {
-  const products = await service.find();
-  res.json(products);
-});
-
-router.get('/filter', (req, res) => {
-  res.send('Esto es un filter');
+router.get('/', async (req, res, next) => {
+  try {
+    const products = await service.find();
+    res.json(products);
+  } catch (error) {
+    next(error);
+  }
 });
 
 router.get(
@@ -36,10 +37,14 @@ router.get(
 router.post(
   '/',
   validatorHandler(createProductSchema, 'body'),
-  async (req, res) => {
-    const body = req.body;
-    const newProduct = await service.create(body);
-    res.status(201).json(newProduct);
+  async (req, res, next) => {
+    try {
+      const body = req.body;
+      const newProduct = await service.create(body);
+      res.status(201).json(newProduct);
+    } catch (error) {
+      next(error);
+    }
   }
 );
 
@@ -59,10 +64,18 @@ router.patch(
   }
 );
 
-router.delete('/:id', async (req, res) => {
-  const { id } = req.params;
-  const deleteProduct = await service.delete(id);
-  res.json(deleteProduct);
-});
+router.delete(
+  '/:id',
+  validatorHandler(getProductSchema, 'params'),
+  async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      await service.delete(id);
+      res.status(201).json({ id });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 
 module.exports = router;

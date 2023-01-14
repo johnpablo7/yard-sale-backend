@@ -18,9 +18,8 @@ const whitelist = [
   'https://yard-sale-node-production.up.railway.app',
 ];
 const options = {
-  optionsSuccessStatus: 200,
   origin: (origin, callback) => {
-    if (!origin || whitelist.includes(origin)) {
+    if (whitelist.includes(origin) || !origin) {
       callback(null, true);
     } else {
       callback(new Error('without permission'));
@@ -35,10 +34,6 @@ app.get('/', (req, res) => {
 
 app.get('/nueva-ruta', (req, res) => {
   res.send('Hola, soy una nueva ruta o Endpoint');
-});
-
-app.get('/home', (req, res) => {
-  res.send('Aquí encontrarás nuestra página principal');
 });
 
 routerApi(app);

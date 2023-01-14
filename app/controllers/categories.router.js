@@ -1,4 +1,5 @@
 const express = require('express');
+
 const CategoriesService = require('../services/categories.service');
 const validatorHandler = require('../middleware/validator.handler');
 const {
@@ -10,9 +11,13 @@ const {
 const router = express.Router();
 const service = new CategoriesService();
 
-router.get('/', async (req, res) => {
-  const categories = await service.find();
-  res.json(categories);
+router.get('/', async (req, res, next) => {
+  try {
+    const categories = await service.find();
+    res.json(categories);
+  } catch (error) {
+    next(error);
+  }
 });
 
 router.get(
@@ -32,10 +37,14 @@ router.get(
 router.post(
   '/',
   validatorHandler(createCategorySchema, 'body'),
-  async (req, res) => {
-    const body = req.body;
-    const newCategory = await service.create(body);
-    res.status(201).json(newCategory);
+  async (req, res, next) => {
+    try {
+      const body = req.body;
+      const newCategory = await service.create(body);
+      res.status(201).json(newCategory);
+    } catch (error) {
+      next(error);
+    }
   }
 );
 
@@ -55,11 +64,19 @@ router.patch(
   }
 );
 
-router.delete('/:id', async (req, res) => {
-  const { id } = req.params;
-  const deleteCategory = await service.delete(id);
-  res.json(deleteCategory);
-});
+router.delete(
+  '/:id',
+  validatorHandler(getCategorySchema, 'params'),
+  async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      await service.delete(id);
+      res.status(201).json({ id });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 
 router.get('/categories/:categoryId/products/:productId', (req, res) => {
   const { categoryId, productId } = req.params;

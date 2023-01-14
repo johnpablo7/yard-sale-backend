@@ -21,7 +21,7 @@ class ProductsService {
   }
 
   async create(data) {
-    const { name, price, image } = data;
+    const { name, price, image } = data; // Tambien podria no ir esta linea y debajo del id poner => ...data
     const newProduct = {
       id: faker.datatype.uuid(),
       name,
