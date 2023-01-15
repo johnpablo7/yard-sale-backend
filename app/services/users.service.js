@@ -1,46 +1,51 @@
-const { faker } = require('@faker-js/faker');
+// const { faker } = require('@faker-js/faker');
 const boom = require('@hapi/boom');
 
-const pool = require('../libs/postgres.pool');
+const { models } = require('../libs/sequelize');
+// const pool = require('../libs/postgres.pool');
 // const getConnection = require('../libs/postgres');
 
 class UsersService {
-  constructor() {
-    this.users = [];
-    this.generate();
-    this.pool = pool;
-    this.pool.on('error', (err) => console.log(err));
-  }
+  constructor() {}
+  // constructor() {
+  //   this.users = [];
+  //   this.generate();
+  //   this.pool = pool;
+  //   this.pool.on('error', (err) => console.log(err));
+  // }
 
-  generate() {
-    let limit = 5;
-    for (let i = 0; i < limit; i++) {
-      this.users.push({
-        id: faker.datatype.uuid(),
-        firstname: faker.name.firstName(),
-        lastname: faker.name.lastName(),
-        email: faker.internet.email(),
-        isBlock: faker.datatype.boolean(),
-      });
-    }
-  }
+  // generate() {
+  //   let limit = 5;
+  //   for (let i = 0; i < limit; i++) {
+  //     this.users.push({
+  //       id: faker.datatype.uuid(),
+  //       firstname: faker.name.firstName(),
+  //       lastname: faker.name.lastName(),
+  //       email: faker.internet.email(),
+  //       isBlock: faker.datatype.boolean(),
+  //     });
+  //   }
+  // }
 
   async create(data) {
-    const { firstname, lastname, email } = data;
-    const newUser = {
-      id: faker.datatype.uuid(),
-      firstname,
-      lastname,
-      email,
-    };
-    this.users.push(newUser);
-    return newUser;
+    return data;
+    // const { firstname, lastname, email } = data;
+    // const newUser = {
+    //   id: faker.datatype.uuid(),
+    //   firstname,
+    //   lastname,
+    //   email,
+    // };
+    // this.users.push(newUser);
+    // return newUser;
   }
 
   async find() {
-    const query = 'SELECT * FROM task';
-    const rta = await this.pool.query(query);
-    return rta.rows;
+    // const query = 'SELECT * FROM task';
+    // const rta = await this.pool.query(query);
+    const rta = await models.User.findAll();
+    return rta;
+    // return rta.rows;
 
     // Esta es otra forma con client
     // const client = await getConnection();
