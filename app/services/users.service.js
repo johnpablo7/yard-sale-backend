@@ -28,7 +28,8 @@ class UsersService {
   // }
 
   async create(data) {
-    return data;
+    const newUser = await models.User.create(data);
+    return newUser;
     // const { firstname, lastname, email } = data;
     // const newUser = {
     //   id: faker.datatype.uuid(),
@@ -41,10 +42,10 @@ class UsersService {
   }
 
   async find() {
-    // const query = 'SELECT * FROM task';
-    // const rta = await this.pool.query(query);
     const rta = await models.User.findAll();
     return rta;
+    // const query = 'SELECT * FROM task';
+    // const rta = await this.pool.query(query);
     // return rta.rows;
 
     // Esta es otra forma con client
@@ -61,43 +62,54 @@ class UsersService {
   }
 
   async findOne(id) {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        const user = this.users.find((item) => item.id === id);
-        if (!user) {
-          reject(boom.notFound('User not found'));
-        } else if (user.isBlock) {
-          reject(boom.conflict('User is Block'));
-        }
+    const user = await models.User.findByPk(id);
+    if (!user) {
+      throw boom.notFound('user not found');
+    }
+    return user;
+    // return new Promise((resolve, reject) => {
+    //   setTimeout(() => {
+    //     const user = this.users.find((item) => item.id === id);
+    //     if (!user) {
+    //       reject(boom.notFound('User not found'));
+    //     } else if (user.isBlock) {
+    //       reject(boom.conflict('User is Block'));
+    //     }
 
-        resolve(user);
-      }, 2000);
-    });
+    //     resolve(user);
+    //   }, 2000);
+    // });
   }
 
   async update(id, changes) {
-    const index = this.users.findIndex((item) => item.id === id);
-    if (index === -1) {
-      throw boom.notFound('User is Block');
-    }
-    const user = this.users[index];
-    if (user.isBlock) {
-      throw boom.conflict('User is Block');
-    }
-    this.users[index] = {
-      ...user,
-      ...changes,
-    };
-    return this.users[index];
+    const user = await this.findOne(id);
+    const rta = await user.update(changes);
+    return rta;
+    // const index = this.users.findIndex((item) => item.id === id);
+    // if (index === -1) {
+    //   throw boom.notFound('User is Block');
+    // }
+    // const user = this.users[index];
+    // if (user.isBlock) {
+    //   throw boom.conflict('User is Block');
+    // }
+    // this.users[index] = {
+    //   ...user,
+    //   ...changes,
+    // };
+    // return this.users[index];
   }
 
   async delete(id) {
-    const index = this.users.findIndex((item) => item.id === id);
-    if (index === -1) {
-      throw boom.notFound('User not found');
-    }
-    this.users.splice(index, 1);
+    const user = await this.findOne(id);
+    await user.destroy();
     return { id };
+    // const index = this.users.findIndex((item) => item.id === id);
+    // if (index === -1) {
+    //   throw boom.notFound('User not found');
+    // }
+    // this.users.splice(index, 1);
+    // return { id };
   }
 }
 

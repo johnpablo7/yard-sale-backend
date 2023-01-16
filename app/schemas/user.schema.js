@@ -1,9 +1,9 @@
 const Joi = require('joi');
 
-const id = Joi.string().uuid();
+// const id = Joi.string().uuid();
+const id = Joi.number().integer();
 const email = Joi.string().email();
 const password = Joi.string().min(8);
-// const role = Joi.string().min(5);
 const firstName = Joi.string()
   .min(2)
   .max(30)
@@ -20,6 +20,7 @@ const lastName = Joi.string()
     'string.pattern.base':
       'Last Name accepts alphabetic characters, numbers and spaces',
   });
+// const role = Joi.string().min(5);
 
 const getUserSchema = Joi.object({
   id: id.required(),
@@ -28,9 +29,9 @@ const getUserSchema = Joi.object({
 const createUserSchema = Joi.object({
   email: email.required(),
   password: password.required(),
-  // role: role.required(),
   firstName: firstName.required(),
   lastName: lastName.required(),
+  // role: role.required(),
 });
 
 const updateUserSchema = Joi.object({

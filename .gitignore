@@ -182,6 +182,8 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+# Recordar que Aqui estamos ignorando carpetas de la data
 postgres_data
+mysql_data
 
 # End of https://www.toptal.com/developers/gitignore/api/node,windows,linux

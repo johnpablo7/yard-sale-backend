@@ -21,15 +21,11 @@ const ProductSchema = {
   image: {
     allowNull: false,
     type: DataTypes.STRING,
-    unique: true,
-    defaultValue: '',
   },
   description: {
     allowNull: false,
     type: DataTypes.TEXT,
     field: 'description',
-    // unique: true,
-    // defaultValue: '',
   },
   stockNumber: {
     allowNull: true,
