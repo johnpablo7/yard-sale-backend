@@ -42,7 +42,9 @@ class UsersService {
   }
 
   async find() {
-    const rta = await models.User.findAll();
+    const rta = await models.User.findAll({
+      include: ['Customer'],
+    });
     return rta;
     // const query = 'SELECT * FROM task';
     // const rta = await this.pool.query(query);
