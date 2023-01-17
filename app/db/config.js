@@ -7,10 +7,10 @@ const URI = `postgres://${USER}:${PASSWORD}@${config.dbHost}:${config.dbPort}/${
 module.exports = {
   development: {
     url: URI,
-    dialect: 'postgress',
+    dialect: 'postgres',
   },
   production: {
     url: URI,
-    dialect: 'postgress',
+    dialect: 'postgres',
   },
 };

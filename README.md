@@ -1,8 +1,8 @@
-Equivale a ambos llamados de la linea 3 y 4
+Equivale a ambos llamados de la linea 3 hasta 6
 docker-compose up -d
-docker-compose up -d pgadmin
 docker-compose up -d postgres
-
+docker-compose up -d phpmyadmin
+docker-compose up -d pgadmin
 docker-compose up -d mysql
 
 Para correr el proyecto de node
@@ -20,3 +20,6 @@ mysql_data
 
 (http://localhost:8080/) || phpMyAdmin
 (http://localhost:5050/) || pgAdmin
+
+Para generar tablas:
+npm run migrations:generate (nombre de la tabla ejemplo: create-customers)
