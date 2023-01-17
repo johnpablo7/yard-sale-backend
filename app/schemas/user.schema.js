@@ -20,7 +20,7 @@ const lastName = Joi.string()
     'string.pattern.base':
       'Last Name accepts alphabetic characters, numbers and spaces',
   });
-// const role = Joi.string().min(5);
+const role = Joi.string().min(5);
 
 const getUserSchema = Joi.object({
   id: id.required(),
@@ -31,12 +31,12 @@ const createUserSchema = Joi.object({
   password: password.required(),
   firstName: firstName.required(),
   lastName: lastName.required(),
-  // role: role.required(),
+  role: role.required(),
 });
 
 const updateUserSchema = Joi.object({
   email: email,
-  // role: role,
+  role: role,
 });
 
 module.exports = {
