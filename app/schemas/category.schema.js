@@ -2,8 +2,8 @@ const Joi = require('joi');
 
 const id = Joi.string().uuid();
 const name = Joi.string()
-  .min(2)
-  .max(30)
+  .min(3)
+  .max(15)
   .regex(/^\w+(?:\s+\w+)*$/)
   .messages({
     'string.pattern.base':

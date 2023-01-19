@@ -10,16 +10,19 @@ npm run dev
 
 Para consultar
 docker-compose ps
+docker ps
+docker inspect 590585ef32f8 <--- + id del contededor postgres "IPAddress": "172.24.0.2",
+
+Para generar tablas Y correrlas:
+npm run migrations:generate (nombre de la tabla ejemplo: create-customers)
+npm run migrations:run
 
 Para retirar el contenedor
 docker-compose down
 
-Recordar ignorar estos doc. en el .gitignore
-postgres_data
-mysql_data
-
 (http://localhost:8080/) || phpMyAdmin
 (http://localhost:5050/) || pgAdmin
 
-Para generar tablas:
-npm run migrations:generate (nombre de la tabla ejemplo: create-customers)
+Recordar ignorar estos doc. en el .gitignore
+postgres_data
+mysql_data

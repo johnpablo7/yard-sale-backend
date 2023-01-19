@@ -1,46 +1,53 @@
-const { faker } = require('@faker-js/faker');
+// const { faker } = require('@faker-js/faker');
 const boom = require('@hapi/boom');
 
-const sequelize = require('../libs/sequelize');
+const { models } = require('../libs/sequelize');
 // const pool = require('../libs/postgres.pool');
 
 class ProductsService {
   constructor() {
-    this.products = [];
-    this.generate();
+    // this.products = [];
+    // this.generate();
     // this.pool = pool;
     // this.pool.on('error', (err) => console.log(err));
   }
 
-  generate() {
-    const limit = 100;
-    for (let i = 0; i < limit; i++) {
-      this.products.push({
-        id: faker.datatype.uuid(),
-        name: faker.commerce.productName(),
-        price: parseInt(faker.commerce.price(), 10),
-        image: faker.image.imageUrl(),
-        isBlock: faker.datatype.boolean(),
-      });
-    }
-  }
+  // generate() {
+  //   const limit = 100;
+  //   for (let i = 0; i < limit; i++) {
+  //     this.products.push({
+  //       id: faker.datatype.uuid(),
+  //       name: faker.commerce.productName(),
+  //       price: parseInt(faker.commerce.price(), 10),
+  //       image: faker.image.imageUrl(),
+  //       isBlock: faker.datatype.boolean(),
+  //     });
+  //   }
+  // }
 
   async create(data) {
-    const { name, price, image } = data; // Tambien podria no ir esta linea y debajo del id poner => ...data
-    const newProduct = {
-      id: faker.datatype.uuid(),
-      name,
-      price,
-      image,
-    };
-    this.products.push(newProduct);
+    const newProduct = await models.Product.create(data);
     return newProduct;
+    // const { name, price, image } = data; // Tambien podria no ir esta linea y debajo del id poner => ...data
+    // const newProduct = {
+    //   id: faker.datatype.uuid(),
+    //   name,
+    //   price,
+    //   image,
+    // };
+    // this.products.push(newProduct);
+    // return newProduct;
   }
 
   async find() {
-    const query = 'SELECT * FROM task';
-    const [data] = await sequelize.query(query); // Tambien podemos traer la metada en el array
-    return data;
+    const products = await models.Product.findAll({
+      include: ['Category'],
+    });
+    return products;
+
+    // const query = 'SELECT * FROM task';
+    // const [data] = await sequelize.query(query); // Tambien podemos traer la metada en el array
+    // return data;
 
     // return new Promise((resolve) => {
     //   setTimeout(() => {
