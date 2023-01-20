@@ -3,7 +3,7 @@ const Joi = require('joi');
 const id = Joi.number().integer();
 const name = Joi.string()
   .min(3)
-  .max(15)
+  .max(30)
   .regex(/^\w+(?:\s+\w+)*$/)
   .messages({
     'string.pattern.base':
