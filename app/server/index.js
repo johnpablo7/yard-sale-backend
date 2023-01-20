@@ -44,6 +44,10 @@ app.use(ormErrorHandler);
 app.use(boomErrorHandler);
 app.use(errorHandler);
 
+app.use((req, res) => {
+  res.status(404).json({ message: "Sorry can't find that!" });
+});
+
 app.listen(port, () => {
   console.log('My port: ' + port);
 });
