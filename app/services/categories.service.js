@@ -44,7 +44,7 @@ class CategoriesService {
 
   async findOne(id) {
     const category = await models.Category.findByPk(id, {
-      include: ['Products'],
+      include: ['products'],
     });
     return category;
     // return new Promise((resolve, reject) => {
