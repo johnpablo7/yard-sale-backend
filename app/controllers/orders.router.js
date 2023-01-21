@@ -5,6 +5,7 @@ const validatorHandler = require('../middleware/validator.handler');
 const {
   getOrderSchema,
   createOrderSchema,
+  addItemSchema,
 } = require('../schemas/order.schema');
 const { notFound } = require('@hapi/boom');
 
@@ -34,6 +35,21 @@ router.post(
       const body = req.body;
       const newOrder = await service.create(body);
       res.status(201).json(newOrder);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+// OrderProduct
+router.post(
+  '/add-item',
+  validatorHandler(addItemSchema, 'body'),
+  async (req, res, next) => {
+    try {
+      const body = req.body;
+      const newItem = await service.addItem(body);
+      res.status(201).json(newItem);
     } catch (error) {
       next(error);
     }
