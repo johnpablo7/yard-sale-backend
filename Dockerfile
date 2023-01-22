@@ -5,8 +5,10 @@ RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
 ARG NODE_ENV
+ARG DATABASE_URL
+
 ENV NODE_ENV=$NODE_ENV
-RUN echo "The NODE_ENV variable value is $NODE_ENV"
+ENV DATABASE_URL=$DATABASE_URL
 
 COPY package*.json ./
 RUN npm ci
