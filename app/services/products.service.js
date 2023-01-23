@@ -1,43 +1,13 @@
-// const { faker } = require('@faker-js/faker');
+const { models } = require('../libs/sequelize');
 const { Op } = require('sequelize');
 const boom = require('@hapi/boom');
 
-const { models } = require('../libs/sequelize');
-// const pool = require('../libs/postgres.pool');
-
 class ProductsService {
-  constructor() {
-    // this.products = [];
-    // this.generate();
-    // this.pool = pool;
-    // this.pool.on('error', (err) => console.log(err));
-  }
-
-  // generate() {
-  //   const limit = 100;
-  //   for (let i = 0; i < limit; i++) {
-  //     this.products.push({
-  //       id: faker.datatype.uuid(),
-  //       name: faker.commerce.productName(),
-  //       price: parseInt(faker.commerce.price(), 10),
-  //       image: faker.image.imageUrl(),
-  //       isBlock: faker.datatype.boolean(),
-  //     });
-  //   }
-  // }
+  constructor() {}
 
   async create(data) {
     const newProduct = await models.Product.create(data);
     return newProduct;
-    // const { name, price, image } = data; // Tambien podria no ir esta linea y debajo del id poner => ...data
-    // const newProduct = {
-    //   id: faker.datatype.uuid(),
-    //   name,
-    //   price,
-    //   image,
-    // };
-    // this.products.push(newProduct);
-    // return newProduct;
   }
 
   async find(query) {
@@ -59,24 +29,12 @@ class ProductsService {
     const { price_min, price_max } = query;
     if (price_min && price_max) {
       options.where.price = {
-        // [Op.gte]: price_min,
-        // [Op.lte]: price_max,
         [Op.between]: [price_min, price_max],
       };
     }
 
     const products = await models.Product.findAll(options);
     return products;
-
-    // const query = 'SELECT * FROM task';
-    // const [data] = await sequelize.query(query); // Tambien podemos traer la metada en el array
-    // return data;
-
-    // return new Promise((resolve) => {
-    //   setTimeout(() => {
-    //     resolve(this.products);
-    //   }, 3000);
-    // });
   }
 
   findOne(id) {
@@ -88,7 +46,6 @@ class ProductsService {
         } else if (product.isBlock) {
           reject(boom.conflict('Product is Block'));
         }
-
         resolve(product);
       }, 2000);
     });
@@ -97,7 +54,6 @@ class ProductsService {
   async update(id, changes) {
     const index = this.products.findIndex((item) => item.id === id);
     if (index === -1) {
-      // throw new Error('product not found');
       throw boom.notFound('Product not found');
     }
     const product = this.products[index];

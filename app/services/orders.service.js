@@ -1,5 +1,3 @@
-// const boom = require('@hapi/boom');
-
 const { models } = require('../libs/sequelize');
 
 class OrderService {
@@ -10,7 +8,7 @@ class OrderService {
     return newOrder;
   }
 
-  //OrdenProduct
+  // OrderProduct
   async addItem(data) {
     const newItem = await models.OrderProduct.create(data);
     return newItem;
