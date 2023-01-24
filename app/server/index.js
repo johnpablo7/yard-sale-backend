@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const routerApi = require('../routes');
+const { checkApiKey } = require('../middleware/auth.handler');
 
 const {
   logErrors,
@@ -33,7 +34,7 @@ app.get('/', (req, res) => {
   res.send('Hola mi server en Express');
 });
 
-app.get('/nueva-ruta', (req, res) => {
+app.get('/nueva-ruta', checkApiKey, (req, res) => {
   res.send('Hola, soy una nueva ruta o Endpoint');
 });
 

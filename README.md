@@ -1,28 +1,30 @@
-Equivale a ambos llamados de la linea 3 hasta 6
-docker-compose up -d
+Inicializar nuestra DB:
+docker-compose up -d | (Todas las bases de datos en Docker)
+
+Utilizadas:
 docker-compose up -d postgres
 docker-compose up -d pgadmin
+docker-compose ps
+
 docker-compose up -d phpmyadmin
 docker-compose up -d mysql
 
-Para correr el proyecto de node
+Ejecutar el proyecto
 npm run dev
 
-Para consultar
-docker-compose ps
+Generar y ejecutar tablas:
+npm run migrations:generate (nombre de la tabla ejemplo: create-user)
+npm run migrations:run
+
+Para consultar la IPAddress donde corre pgadmin:
 docker ps
 docker inspect 590585ef32f8 <--- + id del contededor postgres "IPAddress": "172.24.0.2",
 
-Para generar tablas Y correrlas:
-npm run migrations:generate (nombre de la tabla ejemplo: create-customers)
-npm run migrations:run
-
-Para retirar el contenedor
+Para retirar un contenedor en Docker:
 docker-compose down
 
 (http://localhost:8080/) || phpMyAdmin
-(http://localhost:5050/) || pgAdmin
 
-Recordar ignorar estos doc. en el .gitignore
+Recordar ignorar estos archivos en el .gitignore:
 postgres_data
 mysql_data
