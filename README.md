@@ -15,7 +15,6 @@ npm run dev
 Generar y ejecutar tablas:
 npm run migrations:generate (nombre de la tabla ejemplo: create-user)
 npm run migrations:run
-npm run migrations:delete
 
 Para consultar la IPAddress donde corre pgadmin:
 docker ps
