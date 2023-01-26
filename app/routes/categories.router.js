@@ -1,7 +1,9 @@
 const express = require('express');
+const auth = require('../utils/auth');
 
 const CategoriesService = require('../services/categories.service');
 const validatorHandler = require('../middleware/validator.handler');
+const { checkRoles } = require('../middleware/auth.handler');
 const {
   getCategorySchema,
   createCategorySchema,
@@ -11,17 +13,24 @@ const {
 const router = express.Router();
 const service = new CategoriesService();
 
-router.get('/', async (req, res, next) => {
-  try {
-    const categories = await service.find();
-    res.json(categories);
-  } catch (error) {
-    next(error);
+router.get(
+  '/',
+  auth.authenticate('jwt', { session: false }), // Sin auth.. y checkRoles los clientes pueden
+  checkRoles('admin', 'seller', 'customer'), // ver el producto sin autorizacion.
+  async (req, res, next) => {
+    try {
+      const categories = await service.find();
+      res.json(categories);
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
 
 router.get(
   '/:id',
+  auth.authenticate('jwt', { session: false }),
+  checkRoles('admin', 'seller', 'customer'),
   validatorHandler(getCategorySchema, 'params'),
   async (req, res, next) => {
     try {
@@ -36,6 +45,8 @@ router.get(
 
 router.post(
   '/',
+  auth.authenticate('jwt', { session: false }),
+  checkRoles('admin', 'seller'),
   validatorHandler(createCategorySchema, 'body'),
   async (req, res, next) => {
     try {
@@ -50,6 +61,8 @@ router.post(
 
 router.patch(
   '/:id',
+  auth.authenticate('jwt', { session: false }),
+  checkRoles('admin', 'seller'),
   validatorHandler(getCategorySchema, 'params'),
   validatorHandler(updateCategorySchema, 'body'),
   async (req, res, next) => {
@@ -66,6 +79,8 @@ router.patch(
 
 router.delete(
   '/:id',
+  auth.authenticate('jwt', { session: false }),
+  checkRoles('admin', 'seller'),
   validatorHandler(getCategorySchema, 'params'),
   async (req, res, next) => {
     try {

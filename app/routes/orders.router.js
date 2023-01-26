@@ -1,4 +1,5 @@
 const express = require('express');
+const auth = require('../utils/auth');
 
 const OrderService = require('../services/orders.service');
 const validatorHandler = require('../middleware/validator.handler');
@@ -29,10 +30,14 @@ router.get(
 
 router.post(
   '/',
-  validatorHandler(createOrderSchema, 'body'),
+  auth.authenticate('jwt', { session: false }),
+  // validatorHandler(createOrderSchema, 'body'),
   async (req, res, next) => {
     try {
-      const body = req.body;
+      // const body = req.body;
+      const body = {
+        userId: req.user.sub,
+      };
       const newOrder = await service.create(body);
       res.status(201).json(newOrder);
     } catch (error) {
