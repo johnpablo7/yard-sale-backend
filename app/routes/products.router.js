@@ -3,6 +3,7 @@ const auth = require('../utils/auth');
 
 const ProductsService = require('../services/products.service');
 const validatorHandler = require('../middleware/validator.handler');
+const { checkRoles } = require('../middleware/auth.handler');
 const {
   createProductSchema,
   updateProductSchema,
@@ -15,7 +16,9 @@ const service = new ProductsService();
 
 router.get(
   '/',
-  validatorHandler(queryProductSchema, 'query'),
+  // auth.authenticate('jwt', { session: false }), // Sin auth.. y checkRoles los clientes pueden
+  // checkRoles('admin', 'seller', 'customer'), // ver el producto sin autorizacion.
+  // validatorHandler(queryProductSchema, 'query'),
   async (req, res, next) => {
     try {
       const products = await service.find(req.query);
@@ -28,6 +31,8 @@ router.get(
 
 router.get(
   '/:id',
+  // auth.authenticate('jwt', { session: false }),
+  // checkRoles('admin', 'seller', 'customer'),
   validatorHandler(getProductSchema, 'params'),
   async (req, res, next) => {
     try {
@@ -43,6 +48,7 @@ router.get(
 router.post(
   '/',
   auth.authenticate('jwt', { session: false }),
+  checkRoles('admin', 'seller'),
   validatorHandler(createProductSchema, 'body'),
   async (req, res, next) => {
     try {
@@ -57,6 +63,8 @@ router.post(
 
 router.patch(
   '/:id',
+  auth.authenticate('jwt', { session: false }),
+  checkRoles('admin', 'seller'),
   validatorHandler(getProductSchema, 'params'),
   validatorHandler(updateProductSchema, 'body'),
   async (req, res, next) => {
@@ -73,6 +81,8 @@ router.patch(
 
 router.delete(
   '/:id',
+  auth.authenticate('jwt', { session: false }),
+  checkRoles('admin', 'seller'),
   validatorHandler(getProductSchema, 'params'),
   async (req, res, next) => {
     try {

@@ -19,6 +19,7 @@ const whitelist = [
   'http://127.0.0.1:5500',
   'https://yard-sale-node-production.up.railway.app',
 ];
+
 const options = {
   origin: (origin, callback) => {
     if (whitelist.includes(origin) || !origin) {

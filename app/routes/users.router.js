@@ -9,6 +9,7 @@ const {
 } = require('../schemas/user.schema');
 
 const router = express.Router();
+
 const service = new UsersService();
 
 router.get('/', async (req, res, next) => {

@@ -7,7 +7,7 @@ class OrderService {
   async create(data) {
     // const newOrder = await models.Order.create(data);
     // return newOrder;
-    const customer = await models.Customer.findAll({
+    const customer = await models.Customer.findOne({
       where: {
         '$user.id$': data.userId,
       },
@@ -16,10 +16,10 @@ class OrderService {
     if (!customer) {
       throw boom.notFound('Customer not found');
     }
-    const dataOrder = {
-      customerId: customer[0].id,
-    };
-    const newOrder = await models.Order.create(dataOrder);
+    // const dataOrder = {
+    //   customerId: customer[0].id,
+    // };
+    const newOrder = await models.Order.create({ customerId: customer.id });
     return newOrder;
   }
 
